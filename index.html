@@ -1,33 +1,27 @@
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gra Formuła 1</title>
-  <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gra F1</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <div id="menu">
-    <h1>Formuła 1</h1>
-    <h2>Wybierz poziom trudności:</h2>
-    <div id="difficulty-selection">
-      <label><input type="radio" name="difficulty" value="easy" checked> Łatwy</label>
-      <label><input type="radio" name="difficulty" value="hard"> Trudny</label>
+    <div id="menu">
+        <h1>Formuła 1 – Gra</h1>
+        <div>
+            <button id="easyBtn">Łatwy</button>
+            <button id="hardBtn">Trudny</button>
+        </div>
+        <button id="startBtn">Start</button>
     </div>
-    <button id="start-btn">Start</button>
-  </div>
-
-  <div id="game-container" class="hidden">
-    <canvas id="game"></canvas>
-    <div id="score">Wynik: 0</div>
-    <div id="controls">
-      <button id="left">←</button>
-      <button id="right">→</button>
+    <button id="toggleControls">Pokaż sterowanie</button>
+    <canvas id="gameCanvas"></canvas>
+    <div class="touch-controls" id="touchControls">
+        <button class="touch-button" id="leftButton">←</button>
+        <button class="touch-button" id="rightButton">→</button>
     </div>
-    <button id="toggle-controls">Pokaż/Ukryj Sterowanie</button>
-  </div>
-
-  <script src="js/script.js"></script>
+    <script src="js/game.js"></script>
 </body>
 </html>
-ł
