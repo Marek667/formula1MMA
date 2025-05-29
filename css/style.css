@@ -35,19 +35,42 @@ body, html {
 #game-container {
   position: relative;
 }
-#controls {
+.touch-controls {
   position: absolute;
-  bottom: 20px;
+  bottom: 30px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 20px;
-  z-index: 2;
+  gap: 40px;
+  z-index: 10;
 }
-#controls.hidden {
-  display: none;
+
+.touch-button {
+  font-size: 36px;
+  padding: 28px 40px;
+  background-color: #eee;
+  border: 2px solid #ccc;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
 }
-button {
-  padding: 10px 20px;
-  font-size: 18px;
+
+.touch-button:active {
+  background-color: #ddd;
+}
+
+/* Przycisk do pokazywania sterowania */
+#toggleControls {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 11;
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 10px;
+  background-color: #fff;
+  border: 1px solid #aaa;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
 }
