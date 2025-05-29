@@ -10,6 +10,7 @@ const menu = document.getElementById("menu");
 const gameContainer = document.getElementById("game-container");
 const engineSound = new Audio("assets/engine.mp3");
 engineSound.loop = true;
+const crashSound = new Audio("assets/crash.mp3");
 
 let width, height;
 let player, enemies, score;
@@ -101,15 +102,21 @@ function gameLoop() {
   updateEnemies();
   drawEnemies();
   drawPlayer();
+
   for (let e of enemies) {
     if (checkCollision(player, e)) {
+      engineSound.pause();        // Zatrzymuje dźwięk silnika
+      crashSound.currentTime = 0; // Resetuje dźwięk rozbicia
+      crashSound.play();          // Odtwarza dźwięk rozbicia
+
       alert("Koniec gry! Twój wynik: " + score);
       return startGame();
     }
   }
-  updateScore();
+
   requestAnimationFrame(gameLoop);
 }
+
 
 function control() {
   if (keys["ArrowLeft"] || keys["a"]) player.x -= player.speed;
