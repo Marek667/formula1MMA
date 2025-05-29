@@ -1,40 +1,41 @@
+
 body, html {
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
+  overflow: hidden;
   font-family: sans-serif;
+  background: #999;
 }
-#game {
+
+canvas {
   display: block;
+  background: #666;
 }
-#score {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  color: white;
-  font-size: 24px;
-  z-index: 2;
-}
+
 #menu {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: #111;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  z-index: 20;
+  text-align: center;
 }
-#menu.hidden {
-  display: none;
+
+#menu button {
+  margin: 10px;
+  padding: 12px 24px;
+  font-size: 18px;
+  cursor: pointer;
 }
-#game-container {
-  position: relative;
+
+.selected {
+  background-color: lightgreen;
 }
+
 .touch-controls {
   position: absolute;
   bottom: 30px;
@@ -61,7 +62,6 @@ body, html {
   background-color: #ddd;
 }
 
-/* Przycisk do pokazywania sterowania */
 #toggleControls {
   position: absolute;
   top: 20px;
