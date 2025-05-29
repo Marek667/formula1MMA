@@ -1,98 +1,133 @@
-
-const canvas = document.getElementById("gameCanvas");
+const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+const scoreDisplay = document.getElementById("score");
+const leftBtn = document.getElementById("left");
+const rightBtn = document.getElementById("right");
+const controlsDiv = document.getElementById("controls");
+const toggleBtn = document.getElementById("toggle-controls");
+const startBtn = document.getElementById("start-btn");
+const menu = document.getElementById("menu");
+const gameContainer = document.getElementById("game-container");
+const engineSound = new Audio("assets/engine.mp3");
+engineSound.loop = true;
 
-let car = { x: canvas.width / 2 - 25, y: canvas.height - 100, width: 50, height: 100, color: "red" };
-let obstacles = [];
-let speed = 3;
-let gameRunning = false;
+let width, height;
+let player, enemies, score;
+let bgY = 0;
+let keys = {};
+let enemySpeedBase = 3;
+let playerSpeed = 4;
 
-const createObstacle = () => {
-  const obsWidth = 50;
-  const obsHeight = 100;
-  const x = Math.random() * (canvas.width - obsWidth);
-  obstacles.push({ x, y: -obsHeight, width: obsWidth, height: obsHeight, color: "blue" });
-};
+const bgImg = new Image();
+bgImg.src = "pictures/background.png";
+const playerImg = new Image();
+playerImg.src = "pictures/player.png";
+const enemyImg = new Image();
+enemyImg.src = "pictures/enemy.png";
 
-const drawCar = () => {
-  ctx.fillStyle = car.color;
-  ctx.fillRect(car.x, car.y, car.width, car.height);
-};
+function resizeCanvas() {
+  width = window.innerWidth;
+  height = window.innerHeight;
+  canvas.width = width;
+  canvas.height = height;
+}
+window.addEventListener("resize", resizeCanvas);
 
-const drawObstacles = () => {
-  ctx.fillStyle = "blue";
-  obstacles.forEach(obs => {
-    ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
-  });
-};
+function startGame() {
+  resizeCanvas();
+  menu.classList.add("hidden");
+  gameContainer.classList.remove("hidden");
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  engineSound.play();
 
-const updateObstacles = () => {
-  obstacles.forEach(obs => obs.y += speed);
-  obstacles = obstacles.filter(obs => obs.y < canvas.height);
-};
+  const selectedDifficulty = document.querySelector('input[name="difficulty"]:checked').value;
+  enemySpeedBase = selectedDifficulty === "hard" ? 5 : 3;
+  playerSpeed = selectedDifficulty === "hard" ? 6 : 4;
 
-const checkCollision = () => {
-  for (let obs of obstacles) {
-    if (car.x < obs.x + obs.width &&
-        car.x + car.width > obs.x &&
-        car.y < obs.y + obs.height &&
-        car.y + car.height > obs.y) {
-      return true;
+  player = { x: width / 2 - 25, y: height - 120, width: 50, height: 100, speed: playerSpeed };
+  enemies = [];
+  score = 0;
+  bgY = 0;
+  keys = {};
+
+  function spawnEnemy() {
+    const x = Math.random() * (width - 50);
+    enemies.push({ x, y: -100, width: 50, height: 100, speed: enemySpeedBase + Math.random() * 2 });
+    setTimeout(spawnEnemy, 1200);
+  }
+
+  spawnEnemy();
+  requestAnimationFrame(gameLoop);
+  control();
+}
+
+function drawBackground() {
+  bgY += 4;
+  if (bgY > height) bgY = 0;
+  ctx.drawImage(bgImg, 0, bgY - height, width, height);
+  ctx.drawImage(bgImg, 0, bgY, width, height);
+}
+
+function drawPlayer() {
+  ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
+}
+
+function drawEnemies() {
+  for (let e of enemies) {
+    ctx.drawImage(enemyImg, e.x, e.y, e.width, e.height);
+  }
+}
+
+function updateEnemies() {
+  for (let e of enemies) e.y += e.speed;
+  enemies = enemies.filter(e => e.y < height);
+}
+
+function checkCollision(a, b) {
+  return a.x < b.x + b.width &&
+         a.x + a.width > b.x &&
+         a.y < b.y + b.height &&
+         a.y + a.height > b.y;
+}
+
+function updateScore() {
+  score++;
+  scoreDisplay.textContent = "Wynik: " + score;
+}
+
+function gameLoop() {
+  ctx.clearRect(0, 0, width, height);
+  drawBackground();
+  updateEnemies();
+  drawEnemies();
+  drawPlayer();
+  for (let e of enemies) {
+    if (checkCollision(player, e)) {
+      alert("Koniec gry! Twój wynik: " + score);
+      return startGame();
     }
   }
-  return false;
-};
-
-const gameLoop = () => {
-  if (!gameRunning) return;
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawCar();
-  drawObstacles();
-  updateObstacles();
-  if (checkCollision()) {
-    alert("Koniec gry!");
-    gameRunning = false;
-    location.reload();
-    return;
-  }
+  updateScore();
   requestAnimationFrame(gameLoop);
-};
+}
 
-document.getElementById("startBtn").addEventListener("click", () => {
-  document.getElementById("menu").style.display = "none";
-  gameRunning = true;
-  setInterval(createObstacle, 2000);
-  gameLoop();
+function control() {
+  if (keys["ArrowLeft"] || keys["a"]) player.x -= player.speed;
+  if (keys["ArrowRight"] || keys["d"]) player.x += player.speed;
+  player.x = Math.max(0, Math.min(width - player.width, player.x));
+  setTimeout(() => requestAnimationFrame(control), 16);
+}
+
+document.addEventListener("keydown", (e) => keys[e.key] = true);
+document.addEventListener("keyup", (e) => keys[e.key] = false);
+
+leftBtn.addEventListener("touchstart", () => keys["ArrowLeft"] = true);
+leftBtn.addEventListener("touchend", () => keys["ArrowLeft"] = false);
+rightBtn.addEventListener("touchstart", () => keys["ArrowRight"] = true);
+rightBtn.addEventListener("touchend", () => keys["ArrowRight"] = false);
+
+toggleBtn.addEventListener("click", () => {
+  controlsDiv.classList.toggle("hidden");
 });
 
-document.getElementById("easyBtn").addEventListener("click", () => {
-  speed = 3;
-  document.getElementById("easyBtn").classList.add("selected");
-  document.getElementById("hardBtn").classList.remove("selected");
-});
-
-document.getElementById("hardBtn").addEventListener("click", () => {
-  speed = 6;
-  document.getElementById("hardBtn").classList.add("selected");
-  document.getElementById("easyBtn").classList.remove("selected");
-});
-
-document.getElementById("leftBtn").addEventListener("touchstart", () => {
-  car.x -= 20;
-});
-
-document.getElementById("rightBtn").addEventListener("touchstart", () => {
-  car.x += 20;
-});
-
-document.getElementById("toggleControls").addEventListener("click", () => {
-  const controls = document.getElementById("controls");
-  controls.style.display = controls.style.display === "flex" ? "none" : "flex";
-});
-
-window.addEventListener("keydown", (e) => {
-  if (e.key === "ArrowLeft") car.x -= 20;
-  if (e.key === "ArrowRight") car.x += 20;
-});
+startBtn.addEventListener("click", startGame);
