@@ -2,26 +2,26 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gra F1</title>
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Formuła 1 - Gra</title>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-    <div id="menu">
-        <h1>Formuła 1 – Gra</h1>
-        <div>
-            <button id="easyBtn">Łatwy</button>
-            <button id="hardBtn">Trudny</button>
-        </div>
-        <button id="startBtn">Start</button>
+  <div id="menu">
+    <h1>Formuła 1 – Gra</h1>
+    <div class="difficulty">
+      <button id="easyBtn" class="selected">Łatwy</button>
+      <button id="hardBtn">Trudny</button>
     </div>
-    <button id="toggleControls">Pokaż sterowanie</button>
-    <canvas id="gameCanvas"></canvas>
-    <div class="touch-controls" id="touchControls">
-        <button class="touch-button" id="leftButton">←</button>
-        <button class="touch-button" id="rightButton">→</button>
-    </div>
-    <script src="js/game.js"></script>
+    <button id="startBtn">Start</button>
+  </div>
+  <canvas id="gameCanvas"></canvas>
+  <div id="controls">
+    <button id="leftBtn">←</button>
+    <button id="rightBtn">→</button>
+  </div>
+  <button id="toggleControls">Pokaż sterowanie</button>
+  <script src="js/script.js"></script>
 </body>
 </html>
