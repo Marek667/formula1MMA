@@ -105,13 +105,15 @@ function gameLoop() {
 
   for (let e of enemies) {
     if (checkCollision(player, e)) {
-      engineSound.pause();        // Zatrzymuje dźwięk silnika
-      crashSound.currentTime = 0; // Resetuje dźwięk rozbicia
-      crashSound.play();          // Odtwarza dźwięk rozbicia
+  engineSound.pause();
+  crashSound.currentTime = 0;
+  crashSound.play();
 
-      alert("Koniec gry! Twój wynik: " + score);
-      return startGame();
-    }
+  alert("Koniec gry! Twój wynik: " + score);
+  score = 0;               // Reset wyniku!
+  return startGame();      // Restart gry
+}
+
   }
 
   requestAnimationFrame(gameLoop);
