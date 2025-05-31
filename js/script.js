@@ -110,9 +110,10 @@ function gameLoop() {
   crashSound.play();
 
   alert("Koniec gry! Twój wynik: " + score);
-  score = 0;               // Reset wyniku!
-  return startGame();      // Restart gry
-}
+      // Reset the score correctly
+      score = 0; // Correctly reset the score
+      return startGame(); // Restart the game
+    }
 
   }
 
