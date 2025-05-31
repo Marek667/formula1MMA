@@ -110,13 +110,13 @@ function gameLoop() {
   crashSound.play();
 
   alert("Koniec gry! Twój wynik: " + score);
-      // Reset the score correctly
-      score = 0; // Correctly reset the score
-      return startGame(); // Restart the game
+      score = 0; 
+      return startGame();
     }
 
   }
 
+  updateScore();
   requestAnimationFrame(gameLoop);
 }
 
